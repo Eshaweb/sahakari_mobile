@@ -74,10 +74,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 var UIHelperService = /** @class */ (function () {
     function UIHelperService() {
-        this.rootUrl = 'http://localhost:55394';
-        //readonly baseUrl='https://sahakari.azurewebsites.net/api';
-        this.baseUrl = 'http://localhost:55394/api';
-        this.rootUrl1 = 'http://localhost:55394/token';
+        //readonly rootUrl = 'http://localhost:55394';
+        this.rootUrl = 'https://sahakari.azurewebsites.net';
+        //readonly baseUrl='http://localhost:55394/api';
+        this.baseUrl = 'https://sahakari.azurewebsites.net/api';
+        //readonly rootUrl1 = 'http://localhost:55394/token';
+        this.rootUrl1 = 'https://sahakari.azurewebsites.net/token';
     }
     UIHelperService.prototype.CallWebAPIUrl = function (api_action_name) {
         return this.rootUrl + api_action_name;
