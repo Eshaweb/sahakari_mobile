@@ -13,11 +13,24 @@ import { SCRequest } from '../services/SCRequest';
 import { StorageService } from '../services/Storage_Service';
 import { ConstantService } from '../services/Constants';
 import { User } from '../LocalStorageTables/User';
+import { SelfCareAc } from '../LocalStorageTables/SelfCareAc';
+import { DigiParty } from '../LocalStorageTables/DigiParty';
+import { Tenant } from '../LocalStorageTables/Tenant';
+import { AddBankRequest } from '../View Models/AddBankRequest';
+import { AddBankResponse } from '../View Models/AddBankResponse';
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
 })
 export class LoginPage implements OnInit {
+  addbankresponse: AddBankResponse;
+  addbankreq: AddBankRequest;
+  SelfCareAc: SelfCareAc;
+  DigiParty: DigiParty;
+  Tenant: Tenant;
+  SelfCareAcs: SelfCareAc;
+  DigiParties: DigiParty;
+  Tenants: Tenant;
   TenantId: any;
   PartyMastId: any;
   username=JSON.parse(localStorage.getItem(this.constant.DB.User)).UserName;
@@ -33,6 +46,7 @@ export class LoginPage implements OnInit {
   isLoginError: boolean;
   formgroup:FormGroup;
   pword:AbstractControl;
+  
   //userName=this.regService.userresult.UserName;
 
   constructor(public constant:ConstantService,public loadingController: LoadingController,public formbuilder:FormBuilder, private regService : RegisterService, public navCtrl: NavController) {
@@ -43,16 +57,16 @@ export class LoginPage implements OnInit {
     this.pword = this.formgroup.controls['pword'];
   }
   ngOnInit() {
-
+    
  }
   OnSubmit(password){
     let loading = this.loadingController.create({
-      content: 'Please wait till the screen loads'
+      content: 'Syncing Operators and Services'
     });
 
     loading.present();
-    var param1=JSON.parse(localStorage.getItem(this.constant.DB.OS));
-    var param2=JSON.parse(localStorage.getItem(this.constant.DB.SelfCareAc));
+    var OS=JSON.parse(localStorage.getItem(this.constant.DB.OS));
+    var SelfCareAc=JSON.parse(localStorage.getItem(this.constant.DB.SelfCareAc));
     //var param3="UserName";
     //var param4="unique";
       //this.regService.loginbyHttpClient(StorageService.GetItem(param3), password,StorageService.GetItem(param4)).subscribe((data : any)=>{       
@@ -64,29 +78,79 @@ export class LoginPage implements OnInit {
         this.userTokenData=data;
           this.regService.userToken=this.userTokenData.access_token;
           localStorage.setItem('userToken',this.userTokenData.access_token);
+          //  });
           // LocalStorageService.SetAuthorizationData(data.access_token);
         //if(localStorage.getItem("OSKey")==null||localStorage.getItem("SelfCareAcKey")==null)
-          if(param1==null||param2==null){
-          this.callservices();
+          
+               
+        
+      });
+      if(OS==null){
+        this.regService.getservicesByHttpclient().subscribe((data: any) => {
+          this.OS=JSON.stringify(data);
+          StorageService.SetItem(this.constant.DB.OS,this.OS);
+
+      });
+     }
+     setTimeout(() => {
+      loading.dismiss();
+    }, 2000); 
+
+        let loadingnew = this.loadingController.create({
+          content: 'Syncing Accounts'
+        });
+    
+        loadingnew.present();
+
+        // var ActiveTenantId=this.regService.TenantId;
+        // this.Tenants=JSON.parse(StorageService.GetItem(this.constant.DB.Tenant));
+        // this.Tenant= this.Tenants.filter(function (obj) { return obj.Id === ActiveTenantId; });
+        // this.DigiParties=JSON.parse(StorageService.GetItem(this.constant.DB.DigiParty));
+        // this.DigiParty=this.DigiParties.filter(function (obj) { return obj.Id === ActiveTenantId; });
+        // this.SelfCareAcs=JSON.parse(StorageService.GetItem(this.constant.DB.SelfCareAc));
+        // this.SelfCareAc=this.SelfCareAcs.filter(function (obj) { return obj.Id === ActiveTenantId; });
+          if(this.Tenant==null||this.DigiParty==null||this.SelfCareAc==null){
+             this.callservices();
           }
+          setTimeout(() => {
+            loadingnew.dismiss();
+          }, 2000); 
           setTimeout(() => {
             this.navCtrl.push(PagePage, { 'ActiveBankName': this.ActiveBankName });
           }, 1000);
-                 
-          setTimeout(() => {
-            loading.dismiss();
-          }, 2000); 
-      });
+      //});
       
   }
 
 
   callservices(){
-    this.regService.getservicesByHttpclient().subscribe((data: any) => {
-          this.OS=JSON.stringify(data);
-          StorageService.SetItem(this.constant.DB.OS,this.OS);
+    this.addbankreq={
+      TenantId:JSON.parse(StorageService.GetItem(this.constant.DB.User)).ActiveTenantId,
+      MobileNo:JSON.parse(StorageService.GetItem(this.constant.DB.User)).UserName
+    }
+this.regService.AddBank(this.addbankreq).subscribe((data:any)=>{
+  this.addbankresponse=data;
+    //this.Tenant={
+    //   Id:data.UserId,
+    //   TenantId:data.TenantId,   //ActiveTenantId
+    //   Name:data.TenantName,
+    //   Address:data.TenantAddress,
+    //   Logo:this.regService.Logo
+    // }
+    // StorageService.SetItem(this.constant.DB.Tenant,JSON.stringify([this.Tenant]));  //Works, But not as of reqment
+    
+    // this.DigiParty={
+        //   Id:data.DigiPartyId,
+        //   DigiPartyId:data.DigiPartyId,
+        //   PartyMastId:data.PartyMastId,
+        //   MobileNo:data.MobileNo,
+        //   TenantId:data.TenantId,  //ActiveTenantId
+        //   Name:data.Name
+        // }
+            //StorageService.SetItem(this.constant.DB.DigiParty,JSON.stringify(this.DigiParty));  //Works, But not as of reqment
+});
+//    
 
-      });
       this.PartyMastId=JSON.parse(StorageService.GetItem(this.constant.DB.DigiParty)).PartyMastId;
       this.TenantId=JSON.parse(StorageService.GetItem(this.constant.DB.DigiParty)).TenantId;      
       this.scr={

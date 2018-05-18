@@ -126,14 +126,14 @@ DB:DB;
             Logo:this.Logo
           }
 
-          this.DigiParty={
-            Id:this.DId,
-            DigiPartyId:this.DigiPartyId,
-            PartyMastId:this.PartyMastId,
-            MobileNo:this.MobileNo,
-            TenantId:this.DTenantId,
-            Name:this.DName
-          }
+          // this.DigiParty={
+          //   Id:this.DId,
+          //   DigiPartyId:this.DigiPartyId,
+          //   PartyMastId:this.PartyMastId,
+          //   MobileNo:this.MobileNo,
+          //   TenantId:this.DTenantId,
+          //   Name:this.DName
+          // }
 
           this.GetOS={
             Id:this.OId,
@@ -151,15 +151,15 @@ DB:DB;
             SubscriptionId:this.SubscriptionId
           }
 
-          this.GetSelfCareAc={
-            Id:this.SCId,
-            AcActId:this.AcActId,
-            HeadName:this.HeadName,
-            AcHeadId:this.AcHeadId,
-            AcSubId:this.AcSubId,
-            AcNo:this.AcNo,
-            LocId:this.LocId,
-            TenantId:this.SCTenantId
-          }
+          // this.GetSelfCareAc={
+          //   Id:this.SCId,
+          //   AcActId:this.AcActId,
+          //   HeadName:this.HeadName,
+          //   AcHeadId:this.AcHeadId,
+          //   AcSubId:this.AcSubId,
+          //   AcNo:this.AcNo,
+          //   LocId:this.LocId,
+          //   TenantId:this.SCTenantId
+          // }
       }
 }

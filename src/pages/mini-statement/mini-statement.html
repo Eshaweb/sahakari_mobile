@@ -9,6 +9,14 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding id="page9" style="background-color:#F3F3F3;">
+    <div *ngIf="ShowHide" (click)="OnPress()" style="border: 1px solid lightgrey; padding: 15px; margin: 5px 0;">
+        
+        <span>Bank Name : {{ HeadName }}</span> <br>
+        
+        <span>Address : {{ AcNo }}</span> <br>
+        
+      </div> 
+      <div *ngIf="xx">
   <ion-list id="miniStatement-list8">
     <ion-item color="assertive" id="miniStatement-list-item35">
       Kavalapadur Demo
@@ -58,4 +66,5 @@
       </div>
     </ion-list>
   </ion-card>
+</div>
 </ion-content>

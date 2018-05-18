@@ -28,10 +28,14 @@ import { RequestForDigiParty } from './RequestForDigiParty';
 import { DigiParty } from '../LocalStorageTables/DigiParty';
 import { FundTransferRequest } from '../View Models/FundTransferRequest';
 import { DoFundTransfer } from '../View Models/DoFundTransfer';
+import { StatementRequest } from '../View Models/StatementRequest';
+import { AddBankRequest } from '../View Models/AddBankRequest';
 //import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 
 @Injectable()
 export class RegisterService {
+    TenantId: string;
+    MobileNo: any;
     Logo: any;
     userresult: UserResult;
     userClaims:UserClaim ;
@@ -52,6 +56,7 @@ userToken:any;
     }
     
     sendMobileNo(mobno:any) {
+        this.MobileNo=mobno;
         var data = "MobileNo=" + mobno;
         var url=this.uihelper.CallWebAPIUrlNew("/Tenant/GetTenantsByMobile") + "?" + data;
        return this.http.get(url).map((response: Response) => {
@@ -75,6 +80,7 @@ userToken:any;
           MobileNo: user.MobileNo
           
         }
+        this.TenantId=user.TenantId;
         var reqHeader = new Headers({'No-Auth':'True'});
         //return this.http.post(this.rootUrl + '/api/User/Register', body,{headers : reqHeader});
         return this.http.post(this.uihelper.CallWebAPIUrlNew("/User/RequestOTP"), body,{headers : reqHeader}).map((response: Response) =>{
@@ -99,7 +105,7 @@ userToken:any;
       ValidatingOTP(postingOTP:PostOPT){
         const post: PostOPT = {
             TenantId: postingOTP.TenantId,
-            PartyMastId: postingOTP.PartyMastId,
+            MobileNo: postingOTP.MobileNo,
             OTPRef:postingOTP.OTPRef,
             OTP:postingOTP.OTP
           }
@@ -109,10 +115,10 @@ userToken:any;
       
 SaveMPin(userposting:UserPost){
     const userpost: UserPost = {
-        DigiPartyId: userposting.DigiPartyId,
+       // DigiPartyId: userposting.DigiPartyId,
         TenantId: userposting.TenantId,
         PIN:userposting.PIN,
-        PartyMastId: userposting.PartyMastId,
+        //PartyMastId: userposting.PartyMastId,
         UniqueId:userposting.UniqueId,
         OTPRef:userposting.OTPRef,
         OTP:userposting.OTP,
@@ -198,6 +204,14 @@ getAccountsbyHttpClient(SCReq:SCRequest){
         });
         }
    
+        AddBank(addBankRequest:AddBankRequest){
+            const body: AddBankRequest = {
+                TenantId: addBankRequest.TenantId,
+                MobileNo: addBankRequest.MobileNo
+                
+              }
+            return this.httpclient.post<AddBankRequest>(this.uihelper.CallWebAPIUrlNew("/Banking/AddBank"),body);
+        }
   GetOperators(OSReq:OSRequest){
 
     const osr: OSRequest = {
@@ -251,6 +265,26 @@ getAccountsbyHttpClient(SCReq:SCRequest){
       } 
     return this.httpclient.post<TranResponse>(this.uihelper.CallWebAPIUrlNew("/Banking/FundTransfer"),DFT);
 
+   }
+
+   GetBalance(statementRequest:StatementRequest){
+    const StmntReq: StatementRequest = {
+        AcMastId:statementRequest.AcMastId,
+        AcSubId:statementRequest.AcMastId,
+        TenantId: statementRequest.TenantId
+        
+      } 
+      return this.httpclient.post<StatementRequest>(this.uihelper.CallWebAPIUrlNew("/Banking/GetAccountBalance"),StmntReq);
+   }
+
+   GetStatement(statementRequest:StatementRequest){
+    const StmntReq: StatementRequest = {
+        AcMastId:statementRequest.AcMastId,
+        AcSubId:statementRequest.AcSubId,
+        TenantId: statementRequest.TenantId
+        
+      } 
+      return this.httpclient.post<StatementRequest>(this.uihelper.CallWebAPIUrlNew("/Banking/GetStatement"),StmntReq);
    }
         private ExtractData(res: Response) {
 

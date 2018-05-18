@@ -4,6 +4,8 @@ import { AutoLogoutService } from '../services/AutoLogOutService';
 import { StorageService } from '../services/Storage_Service';
 import { ConstantService } from '../services/Constants';
 import { FundTransferPage } from '../fund-transfer/fund-transfer';
+import { BalanceEnquiryPage } from '../balance-enquiry/balance-enquiry';
+import { MiniStatementPage } from '../mini-statement/mini-statement';
 
 @Component({
   selector: 'page-banking',
@@ -23,8 +25,15 @@ export class BankingPage implements OnInit{
     this.ActiveBankName=JSON.parse(StorageService.GetItem(this.constant.DB.User)).ActiveTenantName;
 
   }
-  OnBanking(){
+  OnFundTransfer(){
     this.navCtrl.push(FundTransferPage);
   }
   
+  OnBalanceEnquiry(){
+    this.navCtrl.push(BalanceEnquiryPage);
+  }
+
+  OnMiniStatement(){
+    this.navCtrl.push(MiniStatementPage);
+  }
 }

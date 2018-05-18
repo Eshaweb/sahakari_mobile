@@ -23,6 +23,7 @@ import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from
 import { DigiParty } from '../LocalStorageTables/DigiParty';
 import { StorageService } from '../services/Storage_Service';
 import { ConstantService } from '../services/Constants';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'page-register',
@@ -44,6 +45,7 @@ export class RegisterPage implements OnInit{
   formgroup:FormGroup;
   mobilenum:AbstractControl;
   lastname:AbstractControl;
+  
   //public loading = Loading.create();
   
 constructor(public constant:ConstantService,public loadingController: LoadingController,public formbuilder:FormBuilder, private platform:Platform,private toastCtrl: ToastController, private toast: Toast, private toastr: ToastrService, private regService : RegisterService, public navCtrl: NavController) {
@@ -56,10 +58,7 @@ constructor(public constant:ConstantService,public loadingController: LoadingCon
   let loader = this.loadingController.create({
     content: "Page Loading....."
   });  
-  loader.present();
-  setTimeout(() => {
-    loader.dismiss();
-  }, 2000); }
+ }
 
   OnSubmit(mobno){
     let loading = this.loadingController.create({
@@ -76,9 +75,9 @@ constructor(public constant:ConstantService,public loadingController: LoadingCon
       //this.navCtrl.push(HomePage);
       
 
-      setTimeout(() => {
+     
         loading.dismiss();
-      }, 4000); 
+       
 },
 (err : HttpErrorResponse)=>{
   this.isLoginError = true;
@@ -94,21 +93,21 @@ this.TenantIdActive=Id;
   }
   this.regService.requestingOTP(this.OTPreq).subscribe((data:any)=>{
     this.store=data;
-    this.DigiParty={
-      Id:data.DigiPartyId,
-      DigiPartyId:data.DigiPartyId,
-      PartyMastId:data.PartyMastId,
-      MobileNo:data.MobileNo,
-      TenantId:data.TenantId,  //ActiveTenantId
-      Name:data.Name
-    }
+    // this.DigiParty={
+    //   Id:data.DigiPartyId,
+    //   DigiPartyId:data.DigiPartyId,
+    //   PartyMastId:data.PartyMastId,
+    //   MobileNo:data.MobileNo,
+    //   TenantId:data.TenantId,  //ActiveTenantId
+    //   Name:data.Name
+    // }
     this.store.OTPRef=data.OTPRef;
     
     //this.toastr.success('You are awesome!'+data._body, 'Success!');
     
     //ADDED toastr.css in the path "node_modules/ngx-toastr/toastr.css" from https://github.com/scttcper/ngx-toastr/blob/master/src/lib/toastr.css
-    this.toastr.success('OTP Sent to '+this.store.MobileNo+ ' with Reference No. '+this.store.OTPRef, 'Success!');
-    StorageService.SetItem(this.constant.DB.DigiParty,JSON.stringify(this.DigiParty));  //Works, But not as of reqment
+    this.toastr.success('OTP Sent to '+this.OTPreq.MobileNo+ ' with Reference No. '+this.store.OTPRef, 'Success!');
+    //StorageService.SetItem(this.constant.DB.DigiParty,JSON.stringify(this.DigiParty));  //Works, But not as of reqment
     //alert('You are awesome!'+ this.store.OTPRef+data._body);
     this.navCtrl.push(EnterOTPPage);
   },

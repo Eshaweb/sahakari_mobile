@@ -159,14 +159,14 @@ OnPress(order){
     MobileNo:this.mobno
   }
   this.regService.requestingDigiParty(this.reqForDigiParty).subscribe((data:any)=>{
-    this.digiParty={
-      Id:data.DigiPartyId,
-      DigiPartyId:data.DigiPartyId,
-      PartyMastId:data.PartyMastId,
-      MobileNo:data.MobileNo,
-      TenantId:data.TenantId,  //ActiveTenantId
-      Name:data.Name
-    }
+    // this.digiParty={
+    //   Id:data.DigiPartyId,
+    //   DigiPartyId:data.DigiPartyId,
+    //   PartyMastId:data.PartyMastId,
+    //   MobileNo:data.MobileNo,
+    //   TenantId:data.TenantId,  //ActiveTenantId
+    //   Name:data.Name
+    // }
   });
 }
 

@@ -57,16 +57,16 @@ SCReq: any;
         //  StorageService.RemoveItem("lastAction");
 
 
-         localStorage.clear();
+         //localStorage.clear();
 
 
           //if(StorageService.GetItem(param1)==null||StorageService.GetItem(param2)==null){
-            if(StorageService.GetItem(this.constant.DB.User)==null||StorageService.GetItem(this.constant.DB.Tenant)==null){
+            if(StorageService.GetItem(this.constant.DB.User)==null){
           this.rootPage=RegisterPage;
       }
      
       else{
-        this.rootPage=PagePage;
+        this.rootPage=LoginPage;
       }
         
     });

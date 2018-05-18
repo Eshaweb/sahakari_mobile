@@ -42,6 +42,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { ConstantService } from '../pages/services/Constants';
 import { AutoLogoutService } from '../pages/services/AutoLogOutService';
 import { FundTransferPage } from '../pages/fund-transfer/fund-transfer';
+import { BalanceEnquiryPage } from '../pages/balance-enquiry/balance-enquiry';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { FundTransferPage } from '../pages/fund-transfer/fund-transfer';
     BankListPage,
     EnterOTPPage,
     SelectOperatorPage,
-    FundTransferPage
+    FundTransferPage,
+    BalanceEnquiryPage
   ],
   imports: [HttpModule,HttpClientModule,BrowserAnimationsModule,
     BrowserModule,
@@ -95,7 +97,8 @@ import { FundTransferPage } from '../pages/fund-transfer/fund-transfer';
     BankListPage,
     EnterOTPPage,
     SelectOperatorPage,
-    FundTransferPage
+    FundTransferPage,
+    BalanceEnquiryPage
   ],
   providers: [AuthGuard,Toast, {
     provide : HTTP_INTERCEPTORS,

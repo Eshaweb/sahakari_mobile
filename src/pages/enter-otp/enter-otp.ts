@@ -71,8 +71,8 @@ this.confirmpwd = this.SavePasswordForm.controls['confirmpwd'];
 
     this.otpno=otpno;
     this.postingotp={
-      TenantId:this.regService.store.TenantId,  //ActiveTenantId
-      PartyMastId:this.regService.store.PartyMastId,
+      TenantId:this.regService.TenantId,  //ActiveTenantId
+      MobileNo:this.regService.MobileNo,
       OTPRef:this.regService.store.OTPRef,
       OTP:this.otpno
     }
@@ -90,16 +90,16 @@ OnPress(pin){
   this.pin=pin;
   this.userpost={
 
-    DigiPartyId: this.regService.store.DigiPartyId,
-    TenantId: this.regService.store.TenantId,  //ActiveTenantId
+    //DigiPartyId: this.regService.store.DigiPartyId,
+    TenantId: this.regService.TenantId,  //ActiveTenantId
     PIN:this.pin,
-    PartyMastId: this.regService.store.PartyMastId,
+    //PartyMastId: this.regService.store.PartyMastId,
     //UniqueId:userposting.UniqueId,
     //UniqueId:this.guid.str,
     UniqueId:this.guid(),
     OTPRef:this.regService.store.OTPRef,
     OTP:this.otpno,
-    MobileNo: this.regService.store.MobileNo
+    MobileNo: this.regService.MobileNo
   }
  
   let loading = this.loadingController.create({
@@ -110,24 +110,24 @@ OnPress(pin){
   this.regService.SaveMPin(this.userpost).subscribe((data:any)=>{
 this.userresult=data;
 this.User={
-  ActiveTenantId:this.regService.store.TenantId,
+  ActiveTenantId:this.regService.TenantId,
   //ActiveTenantId:data.TenantId,
-  ActiveTenantName:data.TenantName,
+  ActiveTenantName:"",
   UserId:data.UserId,
   UserName:data.UserName,
   UniqueKey:data.UniqueKey
 }
-this.Tenant={
-  Id:data.UserId,
-  TenantId:data.TenantId,   //ActiveTenantId
-  Name:data.TenantName,
-  Address:data.TenantAddress,
-  Logo:this.regService.Logo
-}
+// this.Tenant={
+//   Id:data.UserId,
+//   TenantId:data.TenantId,   //ActiveTenantId
+//   Name:data.TenantName,
+//   Address:data.TenantAddress,
+//   Logo:this.regService.Logo
+// }
 //StorageService.SetItem(this.constant.UserKey,User);
 //StorageService.SetItem("UserKey",JSON.stringify(this.User));  //Works, But not as of reqment
 StorageService.SetItem(this.constant.DB.User,JSON.stringify(this.User));  //Works, But not as of reqment
-StorageService.SetItem(this.constant.DB.Tenant,JSON.stringify([this.Tenant]));  //Works, But not as of reqment
+//StorageService.SetItem(this.constant.DB.Tenant,JSON.stringify([this.Tenant]));  //Works, But not as of reqment
 //StorageService.SetItem(this.constant.UserKey,this.User);  //Not Works 
 //StorageService.RemoveItem(this.constant.UserKey);  //Not Works 
 
